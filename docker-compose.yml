@@ -1,0 +1,21 @@
+services:
+  fingpt-service:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=FinGPT/fingpt-sentiment_llama2-7b_lora
+      - BASE_MODEL=nousresearch/llama-2-7b-hf
+      - DEVICE=cuda
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - huggingface_cache:/root/.cache/huggingface
+
+volumes:
+  huggingface_cache:
