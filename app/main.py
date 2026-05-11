@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.api.endpoints import router as api_router
 from app.core.config import settings
 from app.core.logging_config import LoggingMiddleware, logger
 from app.services.sentiment_service import analyzer
@@ -12,6 +13,9 @@ app = FastAPI(
 
 # Add logging middleware
 app.add_middleware(LoggingMiddleware)
+
+# Include API routes
+app.include_router(api_router, prefix=settings.API_V1_STR)
 
 @app.on_event("startup")
 async def startup_event():
